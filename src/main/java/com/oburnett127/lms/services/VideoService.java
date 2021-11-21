@@ -2,6 +2,7 @@ package com.oburnett127.lms.services;
 
 import com.oburnett127.MyEcomm.model.Account;
 import com.oburnett127.MyEcomm.repository.AccountRepository;
+import com.oburnett127.lms.models.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
