@@ -1,19 +1,40 @@
 package com.oburnett127.lms.services;
 
 import com.oburnett127.MyEcomm.model.Purchase;
+import com.oburnett127.MyEcomm.repository.PurchaseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface PurchaseService {
+@Service("purchaseService")
+public class PurchaseService implements com.oburnett127.MyEcomm.service.PurchaseService {
 
-	Purchase createPurchase(Purchase Purchase);
+	@Autowired
+	private PurchaseRepository purchaseRepository;
 	
-	List<Purchase> getPurchases();
+	@Override
+	public Purchase createPurchase(Purchase purchase) {
+		return purchaseRepository.createPurchase(purchase);
+	}
 	
-	Purchase getPurchase(Integer id);
-
-//	Purchase updatePurchase(Purchase Purchase);
-
-	void deletePurchase(Integer id);
-
+	@Override
+	public Purchase getPurchase(Integer id) {
+		return purchaseRepository.getPurchase(id);
+	}
+	
+	@Override
+	public List<Purchase> getPurchases() {
+		return purchaseRepository.getPurchases();
+	}
+	
+//	@Override
+//	public Purchase updatePurchase(Purchase purchase) {
+//		return purchaseRepository.updatePurchase(purchase);
+//	}
+	
+	@Override
+	public void deletePurchase(Integer id) {
+		purchaseRepository.deletePurchase(id);
+	}
 }

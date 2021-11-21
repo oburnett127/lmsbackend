@@ -11,6 +11,11 @@ public class Purchase {
 	private int purchaseId;
 	private int accountId;
 	private String purchaseDate;
-	private com.oburnett127.lms.model.PurchaseDetails purchaseDetails;
-	private BillingInfo billingInfo;
-}
+	private PurchaseDetails purchaseDetails;
+	private String billFirstName;
+	private String billLastName;
+	private String billAddress;
+	private String creditCardExpDate;
+	private String creditCardPin;
+	private String creditCardNum;
+	private String creditCardName;}

@@ -1,19 +1,40 @@
 package com.oburnett127.lms.services;
 
 import com.oburnett127.MyEcomm.model.Account;
+import com.oburnett127.MyEcomm.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface AccountService {
+@Service("accountService")
+public class AccountService implements com.oburnett127.MyEcomm.service.AccountService {
 
-	Account createAccount(Account Account);
+	@Autowired
+	private AccountRepository accountRepository;
 	
-	List<Account> getAccounts();
+	@Override
+	public Account createAccount(Account account) {
+		return accountRepository.createAccount(account);
+	}
 	
-	Account getAccount(Integer id);
-
-	Account updateAccount(Account Account);
-
-	void deleteAccount(Integer id);
-
+	@Override
+	public Account getAccount(Integer id) {
+		return accountRepository.getAccount(id);
+	}
+	
+	@Override
+	public List<Account> getAccounts() {
+		return accountRepository.getAccounts();
+	}
+	
+	@Override
+	public Account updateAccount(Account account) {
+		return accountRepository.updateAccount(account);
+	}
+	
+	@Override
+	public void deleteAccount(Integer id) {
+		accountRepository.deleteAccount(id);
+	}
 }

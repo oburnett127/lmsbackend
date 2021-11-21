@@ -1,17 +1,38 @@
 package com.oburnett127.lms.services;
 
 import com.oburnett127.MyEcomm.model.Cart;
+import com.oburnett127.MyEcomm.repository.CartRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface CartService {
+@Service("cartService")
+public class CartService implements CartOperations {
 
-	Cart createCart(Cart Cart);
+	@Autowired
+	private CartRepository cartRepository;
 	
-	Cart getCart(Integer id);
+	@Override
+	public Cart createCart(Cart cart) {
+		return cartRepository.createCart(cart);
+	}
 	
-	//List<Cart> getCarts();
-
-	//Cart updateCart(Cart Cart);
-
-	//void deleteCart(Integer id);
-
+	@Override
+	public Cart getCart(Integer id) {
+		return cartRepository.getCart(id);
+	}
+	
+//	@Override
+//	public List<Cart> getCarts() {
+//		return cartRepository.getCarts();
+//	}
+//	
+//	@Override
+//	public Cart updateCart(Cart cart) {
+//		return cartRepository.updateCart(cart);
+//	}
+//	
+//	@Override
+//	public void deleteCart(Integer id) {
+//		cartRepository.deleteCart(id);
+//	}
 }

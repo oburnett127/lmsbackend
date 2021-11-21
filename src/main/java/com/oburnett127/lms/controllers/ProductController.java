@@ -2,6 +2,7 @@ package com.oburnett127.lms.controllers;
 
 import com.oburnett127.MyEcomm.model.Product;
 import com.oburnett127.MyEcomm.service.ProductService;
+import com.oburnett127.lms.services.ProductOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class ProductController {
 	@Autowired
-	private ProductService productService;
+	private ProductOperations productService;
 	
 	@RequestMapping(value = "/product", method = RequestMethod.POST)
 	public @ResponseBody Product createProduct(@RequestBody Product product) {
@@ -39,6 +40,4 @@ public class ProductController {
 		productService.deleteProduct(id);
 		return null;
 	}
-	
-
 }

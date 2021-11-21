@@ -3,50 +3,73 @@ package com.oburnett127.lms.controllers;
 import com.oburnett127.MyEcomm.model.Account;
 import com.oburnett127.MyEcomm.service.AccountService;
 import com.oburnett127.MyEcomm.util.ServiceError;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.oburnett127.lms.models.Account;
+import com.oburnett127.lms.services.AccountOperations;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
-@Data
-@Controller
+
+@CrossOrigin
+@RestController
+@Slf4j
 public class AccountController {
-	@Autowired
-	private AccountService accountService;
-	
-	@RequestMapping(value = "/account", method = RequestMethod.POST)
-	public @ResponseBody Account createaccount(@RequestBody Account account) {
-		return accountService.createAccount(account);
+
+	private final AccountOperations service;
+
+	public AccountController(final AccountOperations service){
+		this.service = service;
 	}
-	
-	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
-	public @ResponseBody List<Account> getaccounts() {
-		return accountService.getAccounts();
+
+	@GetMapping("/view")
+	public ResponseEntity<List<Account>> view() {
+		final var result = service.listAll();
+		return ResponseEntity.ok().body(result);
 	}
-	
-	@RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
-	public @ResponseBody Account getaccount(@PathVariable(value="id") Integer id) {
-		return accountService.getAccount(id);
+
+	@GetMapping("/account")
+	public ResponseEntity<Account> getAccount(@Validated @RequestBody AccountRequest accountRequest) {
+		final var account = service.getAccount(accountRequest.getId());
+		return ResponseEntity.ok().body(account);
 	}
-	
-	@RequestMapping(value = "/account", method = RequestMethod.PUT)
-	public @ResponseBody Account updateaccount(@RequestBody Account account) {
-		return accountService.updateAccount(account);
+
+
+	@PostMapping("/create")
+	public ResponseEntity<Account> createAccount(@Validated @RequestBody CreateAccountRequest createAccountRequest) throws IOException {
+		final var account = Account.builder()
+				.email(createAccountRequest.getEmail())
+				.phone(createAccountRequest.getPhone())
+				.firstName(createAccountRequest.getFirstName())
+				.lastName(createAccountRequest.getLastName())
+				.password(createAccountRequest.getPassword())
+				.is_admin(createAccountRequest.isAdmin())
+				.build();
+		service.createAccount(account);
+		log.debug(DebugMessage.MSG5,account.getFullName(),account.getId());
+
+
+		return ResponseEntity.ok(account);
 	}
-	
-	@RequestMapping(value = "account/delete/{id}", method = RequestMethod.DELETE)
-	public @ResponseBody Object delete(@PathVariable(value="id") Integer id) {
-		accountService.deleteAccount(id);
-		return null;
+
+	@PostMapping("/update)
+	public ResponseEntity<Account> updateAccount(@Validated @RequestBody UpdateAccountRequest updateAccountRequest) throws IOException {
+		final var id = withdrawRequest.getId();
+		final var amount = withdrawRequest.getAmount();
+		final var result = service.withdraw(id, amount);
+		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
+		return ResponseEntity.ok().body(result);
 	}
-	
-	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<ServiceError> handle(RuntimeException ex) {
-		ServiceError error = new ServiceError(HttpStatus.OK.value(), ex.getMessage());
-		return new ResponseEntity<>(error, HttpStatus.OK);
+
+	@PostMapping("/delete)
+			public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest updateAccountRequest) throws IOException {
+		final var id = withdrawRequest.getId();
+		final var amount = withdrawRequest.getAmount();
+		final var result = service.withdraw(id, amount);
+		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
+		return ResponseEntity.ok().body(result);
 	}
 }

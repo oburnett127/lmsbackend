@@ -45,10 +45,4 @@ public class AuthorController {
 		authorService.deleteAuthor(id);
 		return null;
 	}
-	
-	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<ServiceError> handle(RuntimeException ex) {
-		ServiceError error = new ServiceError(HttpStatus.OK.value(), ex.getMessage());
-		return new ResponseEntity<>(error, HttpStatus.OK);
-	}
 }

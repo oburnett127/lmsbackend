@@ -4,9 +4,9 @@ package com.oburnett127.lms.controllers;
 import com.oburnett127.MyEcomm.model.Purchase;
 import com.oburnett127.MyEcomm.service.PurchaseService;
 import com.oburnett127.MyEcomm.util.ServiceError;
+import com.oburnett127.lms.models.Purchase;
+import com.oburnett127.lms.services.PurchaseOperations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 public class PurchaseController {
 	@Autowired
-	private PurchaseService purchaseService;
+	private PurchaseOperations purchaseService;
 	
 	@RequestMapping(value = "/purchase", method = RequestMethod.POST)
 	public @ResponseBody Purchase createPurchase(@RequestBody Purchase purchase) {
@@ -32,20 +32,14 @@ public class PurchaseController {
 		return purchaseService.getPurchase(id);
 	}
 	
-//	@RequestMapping(value = "/purchase", method = RequestMethod.PUT)
-//	public @ResponseBody Purchase updatePurchase(@RequestBody Purchase Purchase) {
-//		return purchaseService.updatePurchase(Purchase);
-//	}
+	@RequestMapping(value = "/purchase", method = RequestMethod.PUT)
+	public @ResponseBody Purchase updatePurchase(@RequestBody Purchase Purchase) {
+		return purchaseService.updatePurchase(Purchase);
+	}
 	
 	@RequestMapping(value = "/purchase/delete/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody Object delete(@PathVariable(value="id") Integer id) {
 		purchaseService.deletePurchase(id);
 		return null;
-	}
-	
-	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<ServiceError> handle(RuntimeException ex) {
-		ServiceError error = new ServiceError(HttpStatus.OK.value(), ex.getMessage());
-		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
 }
