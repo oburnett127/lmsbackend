@@ -52,7 +52,7 @@ public class ProductController {
 		return ResponseEntity.ok(Product);
 	}
 
-	@PostMapping("/update)
+	@PostMapping("/update")
 			public ResponseEntity<Product> updateProduct(@Validated @RequestBody UpdateProductRequest updateProductRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
@@ -61,8 +61,8 @@ public class ProductController {
 		return ResponseEntity.ok().body(result);
 	}
 
-	@PostMapping("/delete)
-			public ResponseEntity<Product> deleteProduct(@Validated @RequestBody DeleteProductRequest updateProductRequest) throws IOException {
+	@PostMapping("/delete")
+	public ResponseEntity<Product> deleteProduct(@Validated @RequestBody DeleteProductRequest updateProductRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
 		final var result = service.withdraw(id, amount);

@@ -1,8 +1,8 @@
-package com.oburnett127.bankmongo.services;
+package com.oburnett127.lms.services;
 
-import com.oburnett127.bankmongo.daos.CommentDao;
-import com.oburnett127.bankmongo.models.Comment;
-import com.oburnett127.bankmongo.utils.CommentValidator;
+import com.oburnett127.lms.daos.CommentDao;
+import com.oburnett127.lms.models.Comment;
+import com.oburnett127.lms.utils.CommentValidator;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

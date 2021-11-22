@@ -1,8 +1,8 @@
-package com.oburnett127.bankmongo.services;
+package com.oburnett127.lms.services;
 
-import com.oburnett127.bankmongo.daos.RatingDao;
-import com.oburnett127.bankmongo.models.Rating;
-import com.oburnett127.bankmongo.utils.RatingValidator;
+import com.oburnett127.lms.daos.RatingDao;
+import com.oburnett127.lms.models.Rating;
+import com.oburnett127.lms.utils.RatingValidator;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

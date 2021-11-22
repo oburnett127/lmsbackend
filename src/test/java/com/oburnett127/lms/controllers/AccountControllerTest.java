@@ -1,8 +1,8 @@
 package com.oburnett127.lms.controllers;
 
 import com.flextrade.jfixture.JFixture;
-import com.oburnett127.bankmongo.models.*;
-import com.oburnett127.bankmongo.services.AccountService;
+import com.oburnett127.lms.models.*;
+import com.oburnett127.lms.services.AccountService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

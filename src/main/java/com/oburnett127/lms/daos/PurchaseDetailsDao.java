@@ -1,7 +1,7 @@
-package com.oburnett127.bankmongo.daos;
+package com.oburnett127.lms.daos;
 
-import com.oburnett127.bankmongo.mappers.PurchaseDetailsMapper;
-import com.oburnett127.bankmongo.models.PurchaseDetails;
+import com.oburnett127.lms.mappers.PurchaseDetailsMapper;
+import com.oburnett127.lms.models.PurchaseDetails;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Component;
 
