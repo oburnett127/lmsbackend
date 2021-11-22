@@ -1,7 +1,7 @@
-package com.oburnett127.bankmongo.daos;
+package com.oburnett127.lms.daos;
 
-import com.oburnett127.bankmongo.mappers.VideoMapper;
-import com.oburnett127.bankmongo.models.Video;
+import com.oburnett127.lms.mappers.VideoMapper;
+import com.oburnett127.lms.models.Video;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Component;
 

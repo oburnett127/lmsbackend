@@ -1,8 +1,8 @@
-package com.oburnett127.bankmongo.services;
+package com.oburnett127.lms.services;
 
-import com.oburnett127.bankmongo.daos.VideoDao;
-import com.oburnett127.bankmongo.models.Video;
-import com.oburnett127.bankmongo.utils.VideoValidator;
+import com.oburnett127.lms.daos.VideoDao;
+import com.oburnett127.lms.models.Video;
+import com.oburnett127.lms.utils.VideoValidator;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

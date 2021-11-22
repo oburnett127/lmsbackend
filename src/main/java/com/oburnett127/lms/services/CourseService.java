@@ -1,8 +1,8 @@
-package com.oburnett127.bankmongo.services;
+package com.oburnett127.lms.services;
 
-import com.oburnett127.bankmongo.daos.CourseDao;
-import com.oburnett127.bankmongo.models.Course;
-import com.oburnett127.bankmongo.utils.CourseValidator;
+import com.oburnett127.lms.daos.CourseDao;
+import com.oburnett127.lms.models.Course;
+import com.oburnett127.lms.utils.CourseValidator;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

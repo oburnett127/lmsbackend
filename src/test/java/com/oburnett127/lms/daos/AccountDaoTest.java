@@ -1,7 +1,7 @@
 package com.oburnett127.lms.daos;
 
 import com.flextrade.jfixture.JFixture;
-import com.oburnett127.bankmongo.models.Account;
+import com.oburnett127.lms.models.Account;
 import com.oburnett127.lms.models.Account;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
