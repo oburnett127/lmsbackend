@@ -1,50 +1,105 @@
-package com.oburnett127.lms.services;
+package com.oburnett127.bankmongo.services;
 
-import com.oburnett127.MyEcomm.model.PurchaseDetails;
-import com.oburnett127.MyEcomm.repository.PurchaseDetailsRepository;
-import com.oburnett127.MyEcomm.repository.PurchaseDetailsRepositoryImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.oburnett127.bankmongo.daos.PurchaseDetailsDao;
+import com.oburnett127.bankmongo.models.PurchaseDetails;
+import com.oburnett127.bankmongo.utils.PurchaseDetailsValidator;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
-@Service("purchaseDetailsService")
-public class PurchaseDetailsService implements com.oburnett127.MyEcomm.service.PurchaseDetailsService {
+@Service
+@Slf4j
+public class PurchaseDetailsService implements PurchaseDetailsOperations {
 
-	@Autowired
-	private PurchaseDetailsRepository purchaseDetailsRepository;
-	
-	public void setPurchaseDetailsRepository() {
-		this.purchaseDetailsRepository = new PurchaseDetailsRepositoryImpl();
+	private final PurchaseDetailsDao PurchaseDetailsDao;
+	private final PurchaseDetailsValidator PurchaseDetailsValidator;
+
+	public PurchaseDetailsService(final PurchaseDetailsDao PurchaseDetailsDao, final PurchaseDetailsValidator PurchaseDetailsValidator) {
+		this.PurchaseDetailsDao = PurchaseDetailsDao;
+		this.PurchaseDetailsValidator = PurchaseDetailsValidator;
 	}
-	
+
 	@Override
-	public PurchaseDetails createPurchaseDetails(PurchaseDetails purchaseDetails) {
-		return purchaseDetailsRepository.createPurchaseDetails(purchaseDetails);
+	public List<PurchaseDetails> listAll() {
+		return this.PurchaseDetailsDao.getAll();
 	}
-	
+
 	@Override
-	public PurchaseDetails getPurchaseDetails(Integer id) {
-		return purchaseDetailsRepository.getPurchaseDetails(id);
+	public void createPurchaseDetails(PurchaseDetails PurchaseDetails) {
+		this.PurchaseDetailsDao.create(PurchaseDetails);
 	}
-	
+
 	@Override
-	public List<PurchaseDetails> getPurchasesDetails() {
-		return purchaseDetailsRepository.getPurchasesDetails();
+	@SneakyThrows
+	public PurchaseDetails getPurchaseDetails(final UUID id) {
+		final var PurchaseDetails = PurchaseDetailsDao.getPurchaseDetails(id);
+
+		return PurchaseDetails;
 	}
-	
+
 	@Override
-	public PurchaseDetails updatePurchaseDetails(PurchaseDetails purchaseDetails) {
-		return purchaseDetailsRepository.updatePurchaseDetails(purchaseDetails);
+	@SneakyThrows
+	public PurchaseDetails withdraw(UUID id, BigDecimal amount) {
+		final var PurchaseDetails = PurchaseDetailsDao.getPurchaseDetails(id);
+
+		PurchaseDetailsValidator.withdraw(PurchaseDetails, amount);
+
+		PurchaseDetails.setBalance(PurchaseDetails.getBalance().subtract(amount));
+
+		PurchaseDetailsDao.save(PurchaseDetails);
+
+		return PurchaseDetails;
 	}
-	
+
 	@Override
-	public void deleteSinglePurchaseDetails(Integer purchaseId, Integer productId) {
-		purchaseDetailsRepository.deleteSinglePurchaseDetails(purchaseId, productId);
+	@SneakyThrows
+	public PurchaseDetails deposit(UUID id, BigDecimal amount) {
+		final var PurchaseDetails = PurchaseDetailsDao.getPurchaseDetails(id);
+
+		PurchaseDetailsValidator.deposit(id, amount);
+
+		log.debug("PurchaseDetails.getId() {}", PurchaseDetails.getId());
+		log.debug("PurchaseDetails balance: {} amount: {}", PurchaseDetails.getBalance(), amount);
+
+		PurchaseDetails.setBalance(PurchaseDetails.getBalance().add(amount));
+
+		PurchaseDetailsDao.save(PurchaseDetails);
+
+		return PurchaseDetails;
 	}
-	
+
 	@Override
-	public void deleteAllPurchaseDetails(Integer id) {
-		purchaseDetailsRepository.deleteAllPurchaseDetails(id);
+	@SneakyThrows
+	public PurchaseDetails depositCheck(UUID id, String fullName, String signature, BigDecimal amount) {
+		final var PurchaseDetails = PurchaseDetailsDao.getPurchaseDetails(id);
+
+		PurchaseDetailsValidator.depositCheck(id, fullName, signature, amount);
+
+		PurchaseDetails.setBalance(PurchaseDetails.getBalance().add(amount));
+
+		PurchaseDetailsDao.save(PurchaseDetails);
+
+		return PurchaseDetails;
+	}
+
+	@Override
+	@SneakyThrows
+	public PurchaseDetails transfer(UUID idSender, UUID idReceiver, BigDecimal amount) {
+		final var senderPurchaseDetails = PurchaseDetailsDao.getPurchaseDetails(idSender);
+		final var receiverPurchaseDetails = PurchaseDetailsDao.getPurchaseDetails(idReceiver);
+
+		PurchaseDetailsValidator.transfer(senderPurchaseDetails, receiverPurchaseDetails, amount);
+
+		senderPurchaseDetails.setBalance(senderPurchaseDetails.getBalance().subtract(amount));
+		receiverPurchaseDetails.setBalance(receiverPurchaseDetails.getBalance().add(amount));
+
+		PurchaseDetailsDao.save(senderPurchaseDetails);
+		PurchaseDetailsDao.save(receiverPurchaseDetails);
+
+		return senderPurchaseDetails;
 	}
 }

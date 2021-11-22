@@ -1,7 +1,7 @@
 package com.oburnett127.lms.controllers;
 
-import com.oburnett127.lms.models.Account;
-import com.oburnett127.lms.services.AccountOperations;
+import com.oburnett127.lms.models.Rating;
+import com.oburnett127.lms.services.RatingOperations;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,44 +16,44 @@ import java.util.List;
 @Slf4j
 public class RatingController {
 
-	private final AccountOperations service;
+	private final RatingOperations service;
 
-	public RatingController(final AccountOperations service){
+	public RatingController(final RatingOperations service){
 		this.service = service;
 	}
 
 	@GetMapping("/view")
-	public ResponseEntity<List<Account>> view() {
+	public ResponseEntity<List<Rating>> view() {
 		final var result = service.listAll();
 		return ResponseEntity.ok().body(result);
 	}
 
-	@GetMapping("/account")
-	public ResponseEntity<Account> getAccount(@Validated @RequestBody AccountRequest accountRequest) {
-		final var account = service.getAccount(accountRequest.getId());
-		return ResponseEntity.ok().body(account);
+	@GetMapping("/Rating")
+	public ResponseEntity<Rating> getRating(@Validated @RequestBody RatingRequest RatingRequest) {
+		final var Rating = service.getRating(RatingRequest.getId());
+		return ResponseEntity.ok().body(Rating);
 	}
 
 
 	@PostMapping("/create")
-	public ResponseEntity<Account> createAccount(@Validated @RequestBody CreateAccountRequest createAccountRequest) throws IOException {
-		final var account = Account.builder()
-				.email(createAccountRequest.getEmail())
-				.phone(createAccountRequest.getPhone())
-				.firstName(createAccountRequest.getFirstName())
-				.lastName(createAccountRequest.getLastName())
-				.password(createAccountRequest.getPassword())
-				.is_admin(createAccountRequest.isAdmin())
+	public ResponseEntity<Rating> createRating(@Validated @RequestBody CreateRatingRequest createRatingRequest) throws IOException {
+		final var Rating = Rating.builder()
+				.email(createRatingRequest.getEmail())
+				.phone(createRatingRequest.getPhone())
+				.firstName(createRatingRequest.getFirstName())
+				.lastName(createRatingRequest.getLastName())
+				.password(createRatingRequest.getPassword())
+				.is_admin(createRatingRequest.isAdmin())
 				.build();
-		service.createAccount(account);
-		log.debug(DebugMessage.MSG5,account.getFullName(),account.getId());
+		service.createRating(Rating);
+		log.debug(DebugMessage.MSG5,Rating.getFullName(),Rating.getId());
 
 
-		return ResponseEntity.ok(account);
+		return ResponseEntity.ok(Rating);
 	}
 
 	@PostMapping("/update)
-	public ResponseEntity<Account> updateAccount(@Validated @RequestBody UpdateAccountRequest updateAccountRequest) throws IOException {
+	public ResponseEntity<Rating> updateRating(@Validated @RequestBody UpdateRatingRequest updateRatingRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
 		final var result = service.withdraw(id, amount);
@@ -62,7 +62,7 @@ public class RatingController {
 	}
 
 	@PostMapping("/delete)
-			public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest updateAccountRequest) throws IOException {
+			public ResponseEntity<Rating> deleteRating(@Validated @RequestBody DeleteRatingRequest deleteRatingRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
 		final var result = service.withdraw(id, amount);

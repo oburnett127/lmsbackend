@@ -1,40 +1,105 @@
-package com.oburnett127.lms.services;
+package com.oburnett127.bankmongo.services;
 
-import com.oburnett127.MyEcomm.model.Account;
-import com.oburnett127.MyEcomm.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.oburnett127.bankmongo.daos.RatingDao;
+import com.oburnett127.bankmongo.models.Rating;
+import com.oburnett127.bankmongo.utils.RatingValidator;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
-@Service("accountService")
-public class RatingService implements com.oburnett127.MyEcomm.service.AccountService {
+@Service
+@Slf4j
+public class RatingService implements RatingOperations {
 
-	@Autowired
-	private AccountRepository accountRepository;
-	
-	@Override
-	public Account createAccount(Account account) {
-		return accountRepository.createAccount(account);
+	private final RatingDao RatingDao;
+	private final RatingValidator RatingValidator;
+
+	public RatingService(final RatingDao RatingDao, final RatingValidator RatingValidator) {
+		this.RatingDao = RatingDao;
+		this.RatingValidator = RatingValidator;
 	}
-	
+
 	@Override
-	public Account getAccount(Integer id) {
-		return accountRepository.getAccount(id);
+	public List<Rating> listAll() {
+		return this.RatingDao.getAll();
 	}
-	
+
 	@Override
-	public List<Account> getAccounts() {
-		return accountRepository.getAccounts();
+	public void createRating(Rating Rating) {
+		this.RatingDao.create(Rating);
 	}
-	
+
 	@Override
-	public Account updateAccount(Account account) {
-		return accountRepository.updateAccount(account);
+	@SneakyThrows
+	public Rating getRating(final UUID id) {
+		final var Rating = RatingDao.getRating(id);
+
+		return Rating;
 	}
-	
+
 	@Override
-	public void deleteAccount(Integer id) {
-		accountRepository.deleteAccount(id);
+	@SneakyThrows
+	public Rating withdraw(UUID id, BigDecimal amount) {
+		final var Rating = RatingDao.getRating(id);
+
+		RatingValidator.withdraw(Rating, amount);
+
+		Rating.setBalance(Rating.getBalance().subtract(amount));
+
+		RatingDao.save(Rating);
+
+		return Rating;
+	}
+
+	@Override
+	@SneakyThrows
+	public Rating deposit(UUID id, BigDecimal amount) {
+		final var Rating = RatingDao.getRating(id);
+
+		RatingValidator.deposit(id, amount);
+
+		log.debug("Rating.getId() {}", Rating.getId());
+		log.debug("Rating balance: {} amount: {}", Rating.getBalance(), amount);
+
+		Rating.setBalance(Rating.getBalance().add(amount));
+
+		RatingDao.save(Rating);
+
+		return Rating;
+	}
+
+	@Override
+	@SneakyThrows
+	public Rating depositCheck(UUID id, String fullName, String signature, BigDecimal amount) {
+		final var Rating = RatingDao.getRating(id);
+
+		RatingValidator.depositCheck(id, fullName, signature, amount);
+
+		Rating.setBalance(Rating.getBalance().add(amount));
+
+		RatingDao.save(Rating);
+
+		return Rating;
+	}
+
+	@Override
+	@SneakyThrows
+	public Rating transfer(UUID idSender, UUID idReceiver, BigDecimal amount) {
+		final var senderRating = RatingDao.getRating(idSender);
+		final var receiverRating = RatingDao.getRating(idReceiver);
+
+		RatingValidator.transfer(senderRating, receiverRating, amount);
+
+		senderRating.setBalance(senderRating.getBalance().subtract(amount));
+		receiverRating.setBalance(receiverRating.getBalance().add(amount));
+
+		RatingDao.save(senderRating);
+		RatingDao.save(receiverRating);
+
+		return senderRating;
 	}
 }

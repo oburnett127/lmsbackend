@@ -27,4 +27,6 @@ public class Account {
 	private String password;
 	@Column(name="is_admin")
 	private boolean isAdmin;
+	@Column(name="is_author")
+	private boolean isAuthor;
 }

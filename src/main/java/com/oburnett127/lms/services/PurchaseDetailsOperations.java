@@ -7,14 +7,13 @@ import java.util.List;
 public interface PurchaseDetailsOperations {
 
 	PurchaseDetails createPurchaseDetails(PurchaseDetails PurchaseDetails);
-	
-	List<PurchaseDetails> getPurchasesDetails();
-	
+
+	List<PurchaseDetails> getPurchaseDetailss();
+
 	PurchaseDetails getPurchaseDetails(Integer id);
 
 	PurchaseDetails updatePurchaseDetails(PurchaseDetails PurchaseDetails);
 
-	void deleteSinglePurchaseDetails(Integer purchaseId, Integer productId);
-	
-	void deleteAllPurchaseDetails(Integer purchaseId);
+	void deletePurchaseDetails(Integer id);
+
 }

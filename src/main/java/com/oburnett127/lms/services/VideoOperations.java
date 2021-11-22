@@ -1,19 +1,19 @@
 package com.oburnett127.lms.services;
 
-import com.oburnett127.MyEcomm.model.Account;
+import com.oburnett127.MyEcomm.model.Video;
 
 import java.util.List;
 
 public interface VideoOperations {
 
-	Account createAccount(Account Account);
-	
-	List<Account> getAccounts();
-	
-	Account getAccount(Integer id);
+	Video createVideo(Video Video);
 
-	Account updateAccount(Account Account);
+	List<Video> getVideos();
 
-	void deleteAccount(Integer id);
+	Video getVideo(Integer id);
+
+	Video updateVideo(Video Video);
+
+	void deleteVideo(Integer id);
 
 }

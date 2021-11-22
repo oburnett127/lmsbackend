@@ -16,7 +16,7 @@ public class Course {
 	private String name;
 	private String description;
 	private BigDecimal price;
-	private Author author;
+	private String author;
 	private ImageIcon image;
 	private String category;
 	private List<String> tags;

@@ -1,6 +1,6 @@
 package com.oburnett127.lms.factories;
 
-import com.oburnett127.bankmongo.models.Account;
+import com.oburnett127.lms.models.Account;
 import org.springframework.stereotype.Component;
 
 import java.security.InvalidParameterException;

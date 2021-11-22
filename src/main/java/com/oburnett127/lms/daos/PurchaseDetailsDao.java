@@ -1,7 +1,7 @@
-package com.oburnett127.lms.daos;
+package com.oburnett127.bankmongo.daos;
 
-import com.oburnett127.bankmongo.mappers.AccountMapper;
-import com.oburnett127.bankmongo.models.Account;
+import com.oburnett127.bankmongo.mappers.PurchaseDetailsMapper;
+import com.oburnett127.bankmongo.models.PurchaseDetails;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -16,34 +16,34 @@ public class PurchaseDetailsDao {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
-    public Account getAccount(final UUID id) {
+    public PurchaseDetails getPurchaseDetails(final UUID id) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            final var account = mapper.getAccount(id);
-            return account;
+            final var mapper = session.getMapper(PurchaseDetailsMapper.class);
+            final var PurchaseDetails = mapper.getPurchaseDetails(id);
+            return PurchaseDetails;
         }
     }
 
-    public List<Account> getAll() {
+    public List<PurchaseDetails> getAll() {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            final var accounts = mapper.getAll();
-            return accounts;
+            final var mapper = session.getMapper(PurchaseDetailsMapper.class);
+            final var PurchaseDetailss = mapper.getAll();
+            return PurchaseDetailss;
         }
     }
 
-    public void save(final Account account) {
+    public void save(final PurchaseDetails PurchaseDetails) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            mapper.save(account);
+            final var mapper = session.getMapper(PurchaseDetailsMapper.class);
+            mapper.save(PurchaseDetails);
             session.commit();
         }
     }
 
-    public void create(final Account account) {
+    public void create(final PurchaseDetails PurchaseDetails) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            mapper.create(account);
+            final var mapper = session.getMapper(PurchaseDetailsMapper.class);
+            mapper.create(PurchaseDetails);
             session.commit();
         }
     }

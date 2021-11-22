@@ -1,7 +1,12 @@
 package com.oburnett127.lms.controllers;
 
-import com.oburnett127.lms.models.Account;
-import com.oburnett127.lms.services.AccountOperations;
+import com.oburnett127.MyEcomm.model.Comment;
+import com.oburnett127.MyEcomm.service.CommentService;
+import com.oburnett127.MyEcomm.util.ServiceError;
+import com.oburnett127.lms.models.Comment;
+import com.oburnett127.lms.models.CommentRequest;
+import com.oburnett127.lms.models.CreateCommentRequest;
+import com.oburnett127.lms.services.CommentOperations;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,44 +21,45 @@ import java.util.List;
 @Slf4j
 public class CommentController {
 
-	private final AccountOperations service;
+	private final CommentOperations service;
 
-	public CommentController(final AccountOperations service){
+	public CommentController(final CommentOperations service){
 		this.service = service;
 	}
 
 	@GetMapping("/view")
-	public ResponseEntity<List<Account>> view() {
+	public ResponseEntity<List<Comment>> view() {
 		final var result = service.listAll();
 		return ResponseEntity.ok().body(result);
 	}
 
-	@GetMapping("/account")
-	public ResponseEntity<Account> getAccount(@Validated @RequestBody AccountRequest accountRequest) {
-		final var account = service.getAccount(accountRequest.getId());
-		return ResponseEntity.ok().body(account);
+	@GetMapping("/Comment")
+	public ResponseEntity<Comment> getComment(@Validated @RequestBody CommentRequest CommentRequest) {
+		final var Comment = service.getComment(CommentRequest.getId());
+		return ResponseEntity.ok().body(Comment);
 	}
 
 
 	@PostMapping("/create")
-	public ResponseEntity<Account> createAccount(@Validated @RequestBody CreateAccountRequest createAccountRequest) throws IOException {
-		final var account = Account.builder()
-				.email(createAccountRequest.getEmail())
-				.phone(createAccountRequest.getPhone())
-				.firstName(createAccountRequest.getFirstName())
-				.lastName(createAccountRequest.getLastName())
-				.password(createAccountRequest.getPassword())
-				.is_admin(createAccountRequest.isAdmin())
+	public ResponseEntity<Comment> createComment(@Validated @RequestBody CreateCommentRequest createCommentRequest) throws IOException {
+		final var Comment = Comment.builder()
+				.email(createCommentRequest.getEmail())
+				.phone(createCommentRequest.getPhone())
+				.firstName(createCommentRequest.getFirstName())
+				.lastName(createCommentRequest.getLastName())
+				.password(createCommentRequest.getPassword())
+				.is_admin(createCommentRequest.isAdmin())
+				.is_author(createCommentRequest.isAuthor())
 				.build();
-		service.createAccount(account);
-		log.debug(DebugMessage.MSG5,account.getFullName(),account.getId());
+		service.createComment(Comment);
+		log.debug(DebugMessage.MSG5,Comment.getFullName(),Comment.getId());
 
 
-		return ResponseEntity.ok(account);
+		return ResponseEntity.ok(Comment);
 	}
 
 	@PostMapping("/update)
-	public ResponseEntity<Account> updateAccount(@Validated @RequestBody UpdateAccountRequest updateAccountRequest) throws IOException {
+			public ResponseEntity<Comment> updateComment(@Validated @RequestBody UpdateCommentRequest updateCommentRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
 		final var result = service.withdraw(id, amount);
@@ -62,7 +68,7 @@ public class CommentController {
 	}
 
 	@PostMapping("/delete)
-			public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest updateAccountRequest) throws IOException {
+			public ResponseEntity<Comment> deleteComment(@Validated @RequestBody DeleteCommentRequest deleteCommentRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
 		final var result = service.withdraw(id, amount);

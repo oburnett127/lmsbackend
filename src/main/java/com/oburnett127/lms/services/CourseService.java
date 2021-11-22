@@ -1,40 +1,105 @@
-package com.oburnett127.lms.services;
+package com.oburnett127.bankmongo.services;
 
-import com.oburnett127.MyEcomm.model.Account;
-import com.oburnett127.MyEcomm.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.oburnett127.bankmongo.daos.CourseDao;
+import com.oburnett127.bankmongo.models.Course;
+import com.oburnett127.bankmongo.utils.CourseValidator;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
-@Service("accountService")
-public class CourseService implements com.oburnett127.MyEcomm.service.AccountService {
+@Service
+@Slf4j
+public class CourseService implements CourseOperations {
 
-	@Autowired
-	private AccountRepository accountRepository;
-	
-	@Override
-	public Account createAccount(Account account) {
-		return accountRepository.createAccount(account);
+	private final CourseDao CourseDao;
+	private final CourseValidator CourseValidator;
+
+	public CourseService(final CourseDao CourseDao, final CourseValidator CourseValidator) {
+		this.CourseDao = CourseDao;
+		this.CourseValidator = CourseValidator;
 	}
-	
+
 	@Override
-	public Account getAccount(Integer id) {
-		return accountRepository.getAccount(id);
+	public List<Course> listAll() {
+		return this.CourseDao.getAll();
 	}
-	
+
 	@Override
-	public List<Account> getAccounts() {
-		return accountRepository.getAccounts();
+	public void createCourse(Course Course) {
+		this.CourseDao.create(Course);
 	}
-	
+
 	@Override
-	public Account updateAccount(Account account) {
-		return accountRepository.updateAccount(account);
+	@SneakyThrows
+	public Course getCourse(final UUID id) {
+		final var Course = CourseDao.getCourse(id);
+
+		return Course;
 	}
-	
+
 	@Override
-	public void deleteAccount(Integer id) {
-		accountRepository.deleteAccount(id);
+	@SneakyThrows
+	public Course withdraw(UUID id, BigDecimal amount) {
+		final var Course = CourseDao.getCourse(id);
+
+		CourseValidator.withdraw(Course, amount);
+
+		Course.setBalance(Course.getBalance().subtract(amount));
+
+		CourseDao.save(Course);
+
+		return Course;
+	}
+
+	@Override
+	@SneakyThrows
+	public Course deposit(UUID id, BigDecimal amount) {
+		final var Course = CourseDao.getCourse(id);
+
+		CourseValidator.deposit(id, amount);
+
+		log.debug("Course.getId() {}", Course.getId());
+		log.debug("Course balance: {} amount: {}", Course.getBalance(), amount);
+
+		Course.setBalance(Course.getBalance().add(amount));
+
+		CourseDao.save(Course);
+
+		return Course;
+	}
+
+	@Override
+	@SneakyThrows
+	public Course depositCheck(UUID id, String fullName, String signature, BigDecimal amount) {
+		final var Course = CourseDao.getCourse(id);
+
+		CourseValidator.depositCheck(id, fullName, signature, amount);
+
+		Course.setBalance(Course.getBalance().add(amount));
+
+		CourseDao.save(Course);
+
+		return Course;
+	}
+
+	@Override
+	@SneakyThrows
+	public Course transfer(UUID idSender, UUID idReceiver, BigDecimal amount) {
+		final var senderCourse = CourseDao.getCourse(idSender);
+		final var receiverCourse = CourseDao.getCourse(idReceiver);
+
+		CourseValidator.transfer(senderCourse, receiverCourse, amount);
+
+		senderCourse.setBalance(senderCourse.getBalance().subtract(amount));
+		receiverCourse.setBalance(receiverCourse.getBalance().add(amount));
+
+		CourseDao.save(senderCourse);
+		CourseDao.save(receiverCourse);
+
+		return senderCourse;
 	}
 }

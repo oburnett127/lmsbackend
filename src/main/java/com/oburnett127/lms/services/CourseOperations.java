@@ -1,19 +1,19 @@
 package com.oburnett127.lms.services;
 
-import com.oburnett127.MyEcomm.model.Account;
+import com.oburnett127.MyEcomm.model.Course;
 
 import java.util.List;
 
 public interface CourseOperations {
 
-	Account createAccount(Account Account);
-	
-	List<Account> getAccounts();
-	
-	Account getAccount(Integer id);
+	Course createCourse(Course Course);
 
-	Account updateAccount(Account Account);
+	List<Course> getCourses();
 
-	void deleteAccount(Integer id);
+	Course getCourse(Integer id);
+
+	Course updateCourse(Course Course);
+
+	void deleteCourse(Integer id);
 
 }

@@ -7,9 +7,9 @@ import java.util.List;
 public interface ProductOperations {
 
 	Product createProduct(Product Product);
-	
+
 	List<Product> getProducts();
-	
+
 	Product getProduct(Integer id);
 
 	Product updateProduct(Product Product);

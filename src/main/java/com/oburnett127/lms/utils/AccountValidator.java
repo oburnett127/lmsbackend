@@ -1,9 +1,9 @@
 package com.oburnett127.lms.utils;
 
-import com.oburnett127.bankmongo.constants.ErrorMessage;
-import com.oburnett127.bankmongo.constants.TransactionType;
-import com.oburnett127.bankmongo.exceptions.*;
-import com.oburnett127.bankmongo.models.Account;
+import com.oburnett127.lms.constants.ErrorMessage;
+import com.oburnett127.lms.constants.TransactionType;
+import com.oburnett127.lms.exceptions.*;
+import com.oburnett127.lms.models.Account;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

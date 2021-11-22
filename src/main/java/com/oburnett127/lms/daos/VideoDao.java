@@ -1,7 +1,7 @@
-package com.oburnett127.lms.daos;
+package com.oburnett127.bankmongo.daos;
 
-import com.oburnett127.bankmongo.mappers.AccountMapper;
-import com.oburnett127.bankmongo.models.Account;
+import com.oburnett127.bankmongo.mappers.VideoMapper;
+import com.oburnett127.bankmongo.models.Video;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -16,34 +16,34 @@ public class VideoDao {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
-    public Account getAccount(final UUID id) {
+    public Video getVideo(final UUID id) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            final var account = mapper.getAccount(id);
-            return account;
+            final var mapper = session.getMapper(VideoMapper.class);
+            final var Video = mapper.getVideo(id);
+            return Video;
         }
     }
 
-    public List<Account> getAll() {
+    public List<Video> getAll() {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            final var accounts = mapper.getAll();
-            return accounts;
+            final var mapper = session.getMapper(VideoMapper.class);
+            final var Videos = mapper.getAll();
+            return Videos;
         }
     }
 
-    public void save(final Account account) {
+    public void save(final Video Video) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            mapper.save(account);
+            final var mapper = session.getMapper(VideoMapper.class);
+            mapper.save(Video);
             session.commit();
         }
     }
 
-    public void create(final Account account) {
+    public void create(final Video Video) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            mapper.create(account);
+            final var mapper = session.getMapper(VideoMapper.class);
+            mapper.create(Video);
             session.commit();
         }
     }

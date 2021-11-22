@@ -1,38 +1,105 @@
-package com.oburnett127.lms.services;
+package com.oburnett127.bankmongo.services;
 
-import com.oburnett127.MyEcomm.model.Cart;
-import com.oburnett127.MyEcomm.repository.CartRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.oburnett127.bankmongo.daos.CartDao;
+import com.oburnett127.bankmongo.models.Cart;
+import com.oburnett127.bankmongo.utils.CartValidator;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Service("cartService")
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@Slf4j
 public class CartService implements CartOperations {
 
-	@Autowired
-	private CartRepository cartRepository;
-	
-	@Override
-	public Cart createCart(Cart cart) {
-		return cartRepository.createCart(cart);
+	private final CartDao CartDao;
+	private final CartValidator CartValidator;
+
+	public CartService(final CartDao CartDao, final CartValidator CartValidator) {
+		this.CartDao = CartDao;
+		this.CartValidator = CartValidator;
 	}
-	
+
 	@Override
-	public Cart getCart(Integer id) {
-		return cartRepository.getCart(id);
+	public List<Cart> listAll() {
+		return this.CartDao.getAll();
 	}
-	
-//	@Override
-//	public List<Cart> getCarts() {
-//		return cartRepository.getCarts();
-//	}
-//	
-//	@Override
-//	public Cart updateCart(Cart cart) {
-//		return cartRepository.updateCart(cart);
-//	}
-//	
-//	@Override
-//	public void deleteCart(Integer id) {
-//		cartRepository.deleteCart(id);
-//	}
+
+	@Override
+	public void createCart(Cart Cart) {
+		this.CartDao.create(Cart);
+	}
+
+	@Override
+	@SneakyThrows
+	public Cart getCart(final UUID id) {
+		final var Cart = CartDao.getCart(id);
+
+		return Cart;
+	}
+
+	@Override
+	@SneakyThrows
+	public Cart withdraw(UUID id, BigDecimal amount) {
+		final var Cart = CartDao.getCart(id);
+
+		CartValidator.withdraw(Cart, amount);
+
+		Cart.setBalance(Cart.getBalance().subtract(amount));
+
+		CartDao.save(Cart);
+
+		return Cart;
+	}
+
+	@Override
+	@SneakyThrows
+	public Cart deposit(UUID id, BigDecimal amount) {
+		final var Cart = CartDao.getCart(id);
+
+		CartValidator.deposit(id, amount);
+
+		log.debug("Cart.getId() {}", Cart.getId());
+		log.debug("Cart balance: {} amount: {}", Cart.getBalance(), amount);
+
+		Cart.setBalance(Cart.getBalance().add(amount));
+
+		CartDao.save(Cart);
+
+		return Cart;
+	}
+
+	@Override
+	@SneakyThrows
+	public Cart depositCheck(UUID id, String fullName, String signature, BigDecimal amount) {
+		final var Cart = CartDao.getCart(id);
+
+		CartValidator.depositCheck(id, fullName, signature, amount);
+
+		Cart.setBalance(Cart.getBalance().add(amount));
+
+		CartDao.save(Cart);
+
+		return Cart;
+	}
+
+	@Override
+	@SneakyThrows
+	public Cart transfer(UUID idSender, UUID idReceiver, BigDecimal amount) {
+		final var senderCart = CartDao.getCart(idSender);
+		final var receiverCart = CartDao.getCart(idReceiver);
+
+		CartValidator.transfer(senderCart, receiverCart, amount);
+
+		senderCart.setBalance(senderCart.getBalance().subtract(amount));
+		receiverCart.setBalance(receiverCart.getBalance().add(amount));
+
+		CartDao.save(senderCart);
+		CartDao.save(receiverCart);
+
+		return senderCart;
+	}
 }

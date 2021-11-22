@@ -1,7 +1,7 @@
 package com.oburnett127.lms.controllers;
 
-import com.oburnett127.lms.models.Account;
-import com.oburnett127.lms.services.AccountOperations;
+import com.oburnett127.lms.models.Course;
+import com.oburnett127.lms.services.CourseOperations;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,44 +16,44 @@ import java.util.List;
 @Slf4j
 public class CourseController {
 
-	private final AccountOperations service;
+	private final CourseOperations service;
 
-	public CourseController(final AccountOperations service){
+	public CourseController(final CourseOperations service){
 		this.service = service;
 	}
 
 	@GetMapping("/view")
-	public ResponseEntity<List<Account>> view() {
+	public ResponseEntity<List<Course>> view() {
 		final var result = service.listAll();
 		return ResponseEntity.ok().body(result);
 	}
 
-	@GetMapping("/account")
-	public ResponseEntity<Account> getAccount(@Validated @RequestBody AccountRequest accountRequest) {
-		final var account = service.getAccount(accountRequest.getId());
-		return ResponseEntity.ok().body(account);
+	@GetMapping("/Course")
+	public ResponseEntity<Course> getCourse(@Validated @RequestBody CourseRequest CourseRequest) {
+		final var Course = service.getCourse(CourseRequest.getId());
+		return ResponseEntity.ok().body(Course);
 	}
 
 
 	@PostMapping("/create")
-	public ResponseEntity<Account> createAccount(@Validated @RequestBody CreateAccountRequest createAccountRequest) throws IOException {
-		final var account = Account.builder()
-				.email(createAccountRequest.getEmail())
-				.phone(createAccountRequest.getPhone())
-				.firstName(createAccountRequest.getFirstName())
-				.lastName(createAccountRequest.getLastName())
-				.password(createAccountRequest.getPassword())
-				.is_admin(createAccountRequest.isAdmin())
+	public ResponseEntity<Course> createCourse(@Validated @RequestBody CreateCourseRequest createCourseRequest) throws IOException {
+		final var Course = Course.builder()
+				.email(createCourseRequest.getEmail())
+				.phone(createCourseRequest.getPhone())
+				.firstName(createCourseRequest.getFirstName())
+				.lastName(createCourseRequest.getLastName())
+				.password(createCourseRequest.getPassword())
+				.is_admin(createCourseRequest.isAdmin())
 				.build();
-		service.createAccount(account);
-		log.debug(DebugMessage.MSG5,account.getFullName(),account.getId());
+		service.createCourse(Course);
+		log.debug(DebugMessage.MSG5,Course.getFullName(),Course.getId());
 
 
-		return ResponseEntity.ok(account);
+		return ResponseEntity.ok(Course);
 	}
 
 	@PostMapping("/update)
-	public ResponseEntity<Account> updateAccount(@Validated @RequestBody UpdateAccountRequest updateAccountRequest) throws IOException {
+	public ResponseEntity<Course> updateCourse(@Validated @RequestBody UpdateCourseRequest updateCourseRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
 		final var result = service.withdraw(id, amount);
@@ -62,7 +62,7 @@ public class CourseController {
 	}
 
 	@PostMapping("/delete)
-			public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest updateAccountRequest) throws IOException {
+			public ResponseEntity<Course> deleteCourse(@Validated @RequestBody DeleteCourseRequest updateCourseRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
 		final var result = service.withdraw(id, amount);

@@ -1,7 +1,7 @@
-package com.oburnett127.lms.daos;
+package com.oburnett127.bankmongo.daos;
 
-import com.oburnett127.bankmongo.mappers.AccountMapper;
-import com.oburnett127.bankmongo.models.Account;
+import com.oburnett127.bankmongo.mappers.CourseMapper;
+import com.oburnett127.bankmongo.models.Course;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -16,34 +16,34 @@ public class CourseDao {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
-    public Account getAccount(final UUID id) {
+    public Course getCourse(final UUID id) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            final var account = mapper.getAccount(id);
-            return account;
+            final var mapper = session.getMapper(CourseMapper.class);
+            final var Course = mapper.getCourse(id);
+            return Course;
         }
     }
 
-    public List<Account> getAll() {
+    public List<Course> getAll() {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            final var accounts = mapper.getAll();
-            return accounts;
+            final var mapper = session.getMapper(CourseMapper.class);
+            final var Courses = mapper.getAll();
+            return Courses;
         }
     }
 
-    public void save(final Account account) {
+    public void save(final Course Course) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            mapper.save(account);
+            final var mapper = session.getMapper(CourseMapper.class);
+            mapper.save(Course);
             session.commit();
         }
     }
 
-    public void create(final Account account) {
+    public void create(final Course Course) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            mapper.create(account);
+            final var mapper = session.getMapper(CourseMapper.class);
+            mapper.create(Course);
             session.commit();
         }
     }

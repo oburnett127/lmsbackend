@@ -1,19 +1,19 @@
 package com.oburnett127.lms.services;
 
-import com.oburnett127.MyEcomm.model.Account;
+import com.oburnett127.MyEcomm.model.Comment;
 
 import java.util.List;
 
 public interface CommentOperations {
 
-	Account createAccount(Account Account);
-	
-	List<Account> getAccounts();
-	
-	Account getAccount(Integer id);
+	Comment createComment(Comment Comment);
 
-	Account updateAccount(Account Account);
+	List<Comment> getComments();
 
-	void deleteAccount(Integer id);
+	Comment getComment(Integer id);
+
+	Comment updateComment(Comment Comment);
+
+	void deleteComment(Integer id);
 
 }

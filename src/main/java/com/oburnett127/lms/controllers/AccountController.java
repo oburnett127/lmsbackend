@@ -4,6 +4,8 @@ import com.oburnett127.MyEcomm.model.Account;
 import com.oburnett127.MyEcomm.service.AccountService;
 import com.oburnett127.MyEcomm.util.ServiceError;
 import com.oburnett127.lms.models.Account;
+import com.oburnett127.lms.models.AccountRequest;
+import com.oburnett127.lms.models.CreateAccountRequest;
 import com.oburnett127.lms.services.AccountOperations;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +49,7 @@ public class AccountController {
 				.lastName(createAccountRequest.getLastName())
 				.password(createAccountRequest.getPassword())
 				.is_admin(createAccountRequest.isAdmin())
+				.is_author(createAccountRequest.isAuthor())
 				.build();
 		service.createAccount(account);
 		log.debug(DebugMessage.MSG5,account.getFullName(),account.getId());
@@ -65,7 +68,7 @@ public class AccountController {
 	}
 
 	@PostMapping("/delete)
-			public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest updateAccountRequest) throws IOException {
+	public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest deleteAccountRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
 		final var result = service.withdraw(id, amount);

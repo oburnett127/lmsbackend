@@ -7,12 +7,12 @@ import java.util.List;
 public interface PurchaseOperations {
 
 	Purchase createPurchase(Purchase Purchase);
-	
+
 	List<Purchase> getPurchases();
-	
+
 	Purchase getPurchase(Integer id);
 
-//	Purchase updatePurchase(Purchase Purchase);
+	Purchase updatePurchase(Purchase Purchase);
 
 	void deletePurchase(Integer id);
 

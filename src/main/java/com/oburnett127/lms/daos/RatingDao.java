@@ -1,7 +1,7 @@
-package com.oburnett127.lms.daos;
+package com.oburnett127.bankmongo.daos;
 
-import com.oburnett127.bankmongo.mappers.AccountMapper;
-import com.oburnett127.bankmongo.models.Account;
+import com.oburnett127.bankmongo.mappers.RatingMapper;
+import com.oburnett127.bankmongo.models.Rating;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Component;
 
@@ -16,34 +16,34 @@ public class RatingDao {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
-    public Account getAccount(final UUID id) {
+    public Rating getRating(final UUID id) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            final var account = mapper.getAccount(id);
-            return account;
+            final var mapper = session.getMapper(RatingMapper.class);
+            final var Rating = mapper.getRating(id);
+            return Rating;
         }
     }
 
-    public List<Account> getAll() {
+    public List<Rating> getAll() {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            final var accounts = mapper.getAll();
-            return accounts;
+            final var mapper = session.getMapper(RatingMapper.class);
+            final var Ratings = mapper.getAll();
+            return Ratings;
         }
     }
 
-    public void save(final Account account) {
+    public void save(final Rating Rating) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            mapper.save(account);
+            final var mapper = session.getMapper(RatingMapper.class);
+            mapper.save(Rating);
             session.commit();
         }
     }
 
-    public void create(final Account account) {
+    public void create(final Rating Rating) {
         try (final var session = sqlSessionFactory.openSession()) {
-            final var mapper = session.getMapper(AccountMapper.class);
-            mapper.create(account);
+            final var mapper = session.getMapper(RatingMapper.class);
+            mapper.create(Rating);
             session.commit();
         }
     }

@@ -1,19 +1,19 @@
 package com.oburnett127.lms.services;
 
-import com.oburnett127.MyEcomm.model.Account;
+import com.oburnett127.MyEcomm.model.Rating;
 
 import java.util.List;
 
 public interface RatingOperations {
 
-	Account createAccount(Account Account);
-	
-	List<Account> getAccounts();
-	
-	Account getAccount(Integer id);
+	Rating createRating(Rating Rating);
 
-	Account updateAccount(Account Account);
+	List<Rating> getRatings();
 
-	void deleteAccount(Integer id);
+	Rating getRating(Integer id);
+
+	Rating updateRating(Rating Rating);
+
+	void deleteRating(Integer id);
 
 }

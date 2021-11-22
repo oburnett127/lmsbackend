@@ -1,43 +1,72 @@
 package com.oburnett127.lms.controllers;
 
-import com.oburnett127.MyEcomm.model.Product;
-import com.oburnett127.MyEcomm.service.ProductService;
+import com.oburnett127.lms.models.Product;
 import com.oburnett127.lms.services.ProductOperations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
-@Controller
 
+@CrossOrigin
+@RestController
+@Slf4j
 public class ProductController {
-	@Autowired
-	private ProductOperations productService;
-	
-	@RequestMapping(value = "/product", method = RequestMethod.POST)
-	public @ResponseBody Product createProduct(@RequestBody Product product) {
-		return productService.createProduct(product);
+
+	private final ProductOperations service;
+
+	public ProductController(final ProductOperations service){
+		this.service = service;
 	}
 
-	@RequestMapping(value = "/products", method = RequestMethod.GET)
-	public @ResponseBody List<Product> getProducts() {
-		return productService.getProducts();
+	@GetMapping("/view")
+	public ResponseEntity<List<Product>> view() {
+		final var result = service.listAll();
+		return ResponseEntity.ok().body(result);
 	}
 
-	@RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
-	public @ResponseBody Product getProduct(@PathVariable(value="id") Integer id) {
-		return productService.getProduct(id);
+	@GetMapping("/Product")
+	public ResponseEntity<Product> getProduct(@Validated @RequestBody ProductRequest ProductRequest) {
+		final var Product = service.getProduct(ProductRequest.getId());
+		return ResponseEntity.ok().body(Product);
 	}
-	
-	@RequestMapping(value = "/product", method = RequestMethod.PUT)
-	public @ResponseBody Product updateProduct(@RequestBody Product Product) {
-		return productService.updateProduct(Product);
+
+
+	@PostMapping("/create")
+	public ResponseEntity<Product> createProduct(@Validated @RequestBody CreateProductRequest createProductRequest) throws IOException {
+		final var Product = Product.builder()
+				.email(createProductRequest.getEmail())
+				.phone(createProductRequest.getPhone())
+				.firstName(createProductRequest.getFirstName())
+				.lastName(createProductRequest.getLastName())
+				.password(createProductRequest.getPassword())
+				.is_admin(createProductRequest.isAdmin())
+				.build();
+		service.createProduct(Product);
+		log.debug(DebugMessage.MSG5,Product.getFullName(),Product.getId());
+
+
+		return ResponseEntity.ok(Product);
 	}
-	
-	@RequestMapping(value = "/product/delete/{id}", method = RequestMethod.DELETE)
-	public @ResponseBody Object delete(@PathVariable(value="id") Integer id) {
-		productService.deleteProduct(id);
-		return null;
+
+	@PostMapping("/update)
+			public ResponseEntity<Product> updateProduct(@Validated @RequestBody UpdateProductRequest updateProductRequest) throws IOException {
+		final var id = withdrawRequest.getId();
+		final var amount = withdrawRequest.getAmount();
+		final var result = service.withdraw(id, amount);
+		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
+		return ResponseEntity.ok().body(result);
+	}
+
+	@PostMapping("/delete)
+			public ResponseEntity<Product> deleteProduct(@Validated @RequestBody DeleteProductRequest updateProductRequest) throws IOException {
+		final var id = withdrawRequest.getId();
+		final var amount = withdrawRequest.getAmount();
+		final var result = service.withdraw(id, amount);
+		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
+		return ResponseEntity.ok().body(result);
 	}
 }

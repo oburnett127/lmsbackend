@@ -1,7 +1,7 @@
 package com.oburnett127.lms.controllers;
 
-import com.oburnett127.lms.models.Account;
-import com.oburnett127.lms.services.AccountOperations;
+import com.oburnett127.lms.models.Video;
+import com.oburnett127.lms.services.VideoOperations;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,44 +16,44 @@ import java.util.List;
 @Slf4j
 public class VideoController {
 
-	private final AccountOperations service;
+	private final VideoOperations service;
 
-	public VideoController(final AccountOperations service){
+	public VideoController(final VideoOperations service){
 		this.service = service;
 	}
 
 	@GetMapping("/view")
-	public ResponseEntity<List<Account>> view() {
+	public ResponseEntity<List<Video>> view() {
 		final var result = service.listAll();
 		return ResponseEntity.ok().body(result);
 	}
 
-	@GetMapping("/account")
-	public ResponseEntity<Account> getAccount(@Validated @RequestBody AccountRequest accountRequest) {
-		final var account = service.getAccount(accountRequest.getId());
-		return ResponseEntity.ok().body(account);
+	@GetMapping("/Video")
+	public ResponseEntity<Video> getVideo(@Validated @RequestBody VideoRequest VideoRequest) {
+		final var Video = service.getVideo(VideoRequest.getId());
+		return ResponseEntity.ok().body(Video);
 	}
 
 
 	@PostMapping("/create")
-	public ResponseEntity<Account> createAccount(@Validated @RequestBody CreateAccountRequest createAccountRequest) throws IOException {
-		final var account = Account.builder()
-				.email(createAccountRequest.getEmail())
-				.phone(createAccountRequest.getPhone())
-				.firstName(createAccountRequest.getFirstName())
-				.lastName(createAccountRequest.getLastName())
-				.password(createAccountRequest.getPassword())
-				.is_admin(createAccountRequest.isAdmin())
+	public ResponseEntity<Video> createVideo(@Validated @RequestBody CreateVideoRequest createVideoRequest) throws IOException {
+		final var Video = Video.builder()
+				.email(createVideoRequest.getEmail())
+				.phone(createVideoRequest.getPhone())
+				.firstName(createVideoRequest.getFirstName())
+				.lastName(createVideoRequest.getLastName())
+				.password(createVideoRequest.getPassword())
+				.is_admin(createVideoRequest.isAdmin())
 				.build();
-		service.createAccount(account);
-		log.debug(DebugMessage.MSG5,account.getFullName(),account.getId());
+		service.createVideo(Video);
+		log.debug(DebugMessage.MSG5,Video.getFullName(),Video.getId());
 
 
-		return ResponseEntity.ok(account);
+		return ResponseEntity.ok(Video);
 	}
 
 	@PostMapping("/update)
-	public ResponseEntity<Account> updateAccount(@Validated @RequestBody UpdateAccountRequest updateAccountRequest) throws IOException {
+			public ResponseEntity<Video> updateVideo(@Validated @RequestBody UpdateVideoRequest updateVideoRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
 		final var result = service.withdraw(id, amount);
@@ -62,7 +62,7 @@ public class VideoController {
 	}
 
 	@PostMapping("/delete)
-			public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest updateAccountRequest) throws IOException {
+			public ResponseEntity<Video> deleteVideo(@Validated @RequestBody DeleteVideoRequest updateVideoRequest) throws IOException {
 		final var id = withdrawRequest.getId();
 		final var amount = withdrawRequest.getAmount();
 		final var result = service.withdraw(id, amount);

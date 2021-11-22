@@ -1,4 +1,4 @@
-package com.oburnett127.lms.daos;
+package com.oburnett127.bankmongo.daos;
 
 import com.oburnett127.bankmongo.mappers.AccountMapper;
 import com.oburnett127.bankmongo.models.Account;
