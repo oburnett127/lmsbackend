@@ -18,10 +18,12 @@ DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
                            `accountid` int NOT NULL AUTO_INCREMENT,
                            `email` varchar(100) NOT NULL,
-                           `firstname` varchar(20) NOT NULL,
-                           `lastname` varchar(20) NOT NULL,
+                           `phone` varchar(10) NOT NULL,
+                           `first_name` varchar(20) NOT NULL,
+                           `last_name` varchar(20) NOT NULL,
                            `password` varchar(30) NOT NULL,
-                           `isadmin` bit(1) NOT NULL,
+                           `is_admin` bit(1) NOT NULL,
+                           `is_author` bit(1) NOT NULL,
                            PRIMARY KEY (`accountid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -31,27 +33,7 @@ LOCK TABLES `account` WRITE;
 INSERT INTO `account` VALUES (1,'fake@fakeemail.com','ralph','jones','123',_binary '\0');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
-DROP TABLE IF EXISTS `billinginfo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `billinginfo` (
-                               `billingid` int NOT NULL AUTO_INCREMENT,
-                               `purchaseid` int NOT NULL,
-                               `billfirstname` varchar(50) NOT NULL,
-                               `billlastname` varchar(50) NOT NULL,
-                               `billingaddress` varchar(100) NOT NULL,
-                               `creditcardexpdate` varchar(4) NOT NULL,
-                               `creditcardpin` varchar(3) NOT NULL,
-                               `creditcardnum` varchar(16) NOT NULL,
-                               `creditcardname` varchar(100) NOT NULL,
-                               PRIMARY KEY (`billingid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
-LOCK TABLES `billinginfo` WRITE;
-/*!40000 ALTER TABLE `billinginfo` DISABLE KEYS */;
-/*!40000 ALTER TABLE `billinginfo` ENABLE KEYS */;
-UNLOCK TABLES;
 DROP TABLE IF EXISTS `cart`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -70,18 +52,6 @@ LOCK TABLES `cart` WRITE;
 INSERT INTO `cart` VALUES (1,1);
 /*!40000 ALTER TABLE `cart` ENABLE KEYS */;
 UNLOCK TABLES;
-DROP TABLE IF EXISTS `product`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `product` (
-                           `id` int NOT NULL AUTO_INCREMENT,
-                           `name` varchar(100) NOT NULL,
-                           `description` varchar(500) NOT NULL,
-                           `unitprice` varchar(20) NOT NULL,
-                           `unitsinstock` int NOT NULL,
-                           PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
@@ -94,7 +64,14 @@ DROP TABLE IF EXISTS `purchase`;
 CREATE TABLE `purchase` (
                             `purchaseid` int NOT NULL AUTO_INCREMENT,
                             `accountid` int NOT NULL,
-                            `purchasedt` varchar(8) NOT NULL,
+                            `purchase_date` varchar(8) NOT NULL,
+                            `bill_first_name` varchar(50) NOT NULL,
+                            `bill_last_name` varchar(50) NOT NULL,
+                            `billing_address` varchar(100) NOT NULL,
+                            `credit_card_expdate` varchar(4) NOT NULL,
+                            `credit_card_pin` varchar(3) NOT NULL,
+                            `credit_card_num` varchar(16) NOT NULL,
+                            `credit_card_name` varchar(100) NOT NULL,
                             PRIMARY KEY (`purchaseid`),
                             KEY `purchase_account_accountid_fk` (`accountid`),
                             CONSTRAINT `purchase_account_accountid_fk` FOREIGN KEY (`accountid`) REFERENCES `account` (`accountid`)

@@ -4,6 +4,8 @@ import com.oburnett127.lms.constants.DebugMessage;
 import com.oburnett127.lms.models.Account;
 import com.oburnett127.lms.models.requests.AccountRequest;
 import com.oburnett127.lms.models.requests.CreateAccountRequest;
+import com.oburnett127.lms.models.requests.DeleteAccountRequest;
+import com.oburnett127.lms.models.requests.UpdateAccountRequest;
 import com.oburnett127.lms.services.AccountOperations;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -50,28 +52,24 @@ public class AccountController {
 				.build();
 		service.createAccount(account);
 		log.debug(DebugMessage.MSG5,account.getFirstName() + " " + account.getLastName(),account.getId());
-
-
 		return ResponseEntity.ok(account);
 	}
 
-//	Wasn't sure what to put in these methods, commenting them for today
+	@PostMapping("/update")
+	public ResponseEntity<Account> updateAccount(@Validated @RequestBody UpdateAccountRequest updateAccountRequest) throws IOException {
+		final var id = updateAccountRequest.getId();
+		final var amount = updateAccountRequest.getAmount();
+		final var result = service.updateAccount(id, amount);
+		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
+		return ResponseEntity.ok().body(result);
+	}
 
-//	@PostMapping("/update")
-//	public ResponseEntity<Account> updateAccount(@Validated @RequestBody UpdateAccountRequest updateAccountRequest) throws IOException {
-//		final var id = withdrawRequest.getId();
-//		final var amount = withdrawRequest.getAmount();
-//		final var result = service.withdraw(id, amount);
-//		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
-//		return ResponseEntity.ok().body(result);
-//	}
-//
-//	@PostMapping("/delete")
-//	public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest deleteAccountRequest) throws IOException {
-//		final var id = withdrawRequest.getId();
-//		final var amount = withdrawRequest.getAmount();
-//		final var result = service.withdraw(id, amount);
-//		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
-//		return ResponseEntity.ok().body(result);
-//	}
+	@PostMapping("/delete")
+	public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest deleteAccountRequest) throws IOException {
+		final var id = deleteAccountRequest.getId();
+		final var amount = deleteAccountRequest.getAmount();
+		final var result = service.deleteAccount(id, amount);
+		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
+		return ResponseEntity.ok().body(result);
+	}
 }
