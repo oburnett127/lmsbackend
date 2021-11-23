@@ -1,17 +1,14 @@
 package com.oburnett127.lms.controllers;
 
-import com.oburnett127.MyEcomm.model.Account;
-import com.oburnett127.MyEcomm.service.AccountService;
-import com.oburnett127.MyEcomm.util.ServiceError;
+import com.oburnett127.lms.constants.DebugMessage;
 import com.oburnett127.lms.models.Account;
-import com.oburnett127.lms.models.AccountRequest;
-import com.oburnett127.lms.models.CreateAccountRequest;
+import com.oburnett127.lms.models.requests.AccountRequest;
+import com.oburnett127.lms.models.requests.CreateAccountRequest;
 import com.oburnett127.lms.services.AccountOperations;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class AccountController {
 
 	@GetMapping("/account")
 	public ResponseEntity<Account> getAccount(@Validated @RequestBody AccountRequest accountRequest) {
-		final var account = service.getAccount(accountRequest.getId());
+		final Account account = service.getAccount(accountRequest.getId());
 		return ResponseEntity.ok().body(account);
 	}
 
@@ -48,31 +45,33 @@ public class AccountController {
 				.firstName(createAccountRequest.getFirstName())
 				.lastName(createAccountRequest.getLastName())
 				.password(createAccountRequest.getPassword())
-				.is_admin(createAccountRequest.isAdmin())
-				.is_author(createAccountRequest.isAuthor())
+				.isAdmin(createAccountRequest.isAdmin())
+				.isAuthor(createAccountRequest.isAuthor())
 				.build();
 		service.createAccount(account);
-		log.debug(DebugMessage.MSG5,account.getFullName(),account.getId());
+		log.debug(DebugMessage.MSG5,account.getFirstName() + " " + account.getLastName(),account.getId());
 
 
 		return ResponseEntity.ok(account);
 	}
 
-	@PostMapping("/update)
-	public ResponseEntity<Account> updateAccount(@Validated @RequestBody UpdateAccountRequest updateAccountRequest) throws IOException {
-		final var id = withdrawRequest.getId();
-		final var amount = withdrawRequest.getAmount();
-		final var result = service.withdraw(id, amount);
-		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
-		return ResponseEntity.ok().body(result);
-	}
+//	Wasn't sure what to put in these methods, commenting them for today
 
-	@PostMapping("/delete)
-	public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest deleteAccountRequest) throws IOException {
-		final var id = withdrawRequest.getId();
-		final var amount = withdrawRequest.getAmount();
-		final var result = service.withdraw(id, amount);
-		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
-		return ResponseEntity.ok().body(result);
-	}
+//	@PostMapping("/update")
+//	public ResponseEntity<Account> updateAccount(@Validated @RequestBody UpdateAccountRequest updateAccountRequest) throws IOException {
+//		final var id = withdrawRequest.getId();
+//		final var amount = withdrawRequest.getAmount();
+//		final var result = service.withdraw(id, amount);
+//		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
+//		return ResponseEntity.ok().body(result);
+//	}
+//
+//	@PostMapping("/delete")
+//	public ResponseEntity<Account> deleteAccount(@Validated @RequestBody DeleteAccountRequest deleteAccountRequest) throws IOException {
+//		final var id = withdrawRequest.getId();
+//		final var amount = withdrawRequest.getAmount();
+//		final var result = service.withdraw(id, amount);
+//		log.debug(DebugMessage.MSG6, amount, result.getId(), result.getBalance());
+//		return ResponseEntity.ok().body(result);
+//	}
 }

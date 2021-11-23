@@ -1,6 +1,6 @@
 package com.oburnett127.lms.services;
 
-import com.oburnett127.MyEcomm.model.Rating;
+import com.oburnett127.lms.model.Rating;
 
 import java.util.List;
 

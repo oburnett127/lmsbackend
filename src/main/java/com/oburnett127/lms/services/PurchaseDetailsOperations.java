@@ -1,6 +1,6 @@
 package com.oburnett127.lms.services;
 
-import com.oburnett127.MyEcomm.model.PurchaseDetails;
+import com.oburnett127.lms.models.PurchaseDetails;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ public interface PurchaseDetailsOperations {
 
 	PurchaseDetails createPurchaseDetails(PurchaseDetails PurchaseDetails);
 
-	List<PurchaseDetails> getPurchaseDetailss();
+	List<PurchaseDetails> listAll();
 
 	PurchaseDetails getPurchaseDetails(Integer id);
 

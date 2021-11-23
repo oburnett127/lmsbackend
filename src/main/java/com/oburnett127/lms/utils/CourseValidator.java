@@ -2,7 +2,7 @@
 //
 //import com.oburnett127.lms.constants.ErrorMessage;
 //import com.oburnett127.lms.constants.TransactionType;
-//import com.oburnett127.lms.exceptions.*;
+//import com.oburnett127.lms.exceptions.InvalidOperationException;
 //import com.oburnett127.lms.models.Account;
 //import lombok.SneakyThrows;
 //import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@
 //
 //@Component
 //@Slf4j
-//public class AccountValidator {
+//public class CourseValidator {
 //
 //    @SneakyThrows
 //    public void withdraw(Account account, BigDecimal amount) {

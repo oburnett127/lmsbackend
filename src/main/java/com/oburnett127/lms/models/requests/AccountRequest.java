@@ -1,4 +1,4 @@
-package com.oburnett127.lms.models;
+package com.oburnett127.lms.models.requests;
 
 import lombok.Data;
 

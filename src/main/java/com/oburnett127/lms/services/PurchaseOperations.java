@@ -1,6 +1,6 @@
 package com.oburnett127.lms.services;
 
-import com.oburnett127.MyEcomm.model.Purchase;
+import com.oburnett127.lms.model.Purchase;
 
 import java.util.List;
 
