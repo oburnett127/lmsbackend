@@ -1,6 +1,7 @@
 package com.oburnett127.lms.factories;
 
 import com.oburnett127.lms.models.Account;
+import lombok.Builder;
 import org.springframework.stereotype.Component;
 
 import java.security.InvalidParameterException;
@@ -12,7 +13,7 @@ public class AccountFactory {
         if ("Base".equals(type)){
             return Account.builder().build();
         }
-        throw new InvalidParameterException("Yikes");
+        throw new InvalidParameterException("Invalid Parameter Exception has occurred in AccountFactory.java");
     }
 }
 

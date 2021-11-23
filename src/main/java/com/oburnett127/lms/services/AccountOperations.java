@@ -1,16 +1,16 @@
 package com.oburnett127.lms.services;
 
-import com.oburnett127.MyEcomm.model.Account;
-
+import com.oburnett127.lms.models.Account;
 import java.util.List;
+import java.util.UUID;
 
 public interface AccountOperations {
 
 	Account createAccount(Account Account);
 	
-	List<Account> getAccounts();
+	List<Account> listAll();
 	
-	Account getAccount(Integer id);
+	Account getAccount(UUID id);
 
 	Account updateAccount(Account Account);
 

@@ -1,6 +1,6 @@
 package com.oburnett127.lms.services;
 
-import com.oburnett127.MyEcomm.model.Video;
+import com.oburnett127.lms.model.Video;
 
 import java.util.List;
 
