@@ -2,10 +2,7 @@ package com.oburnett127.lms.models;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -17,6 +14,7 @@ import java.util.UUID;
 @Entity
 public class Account {
 	@Id
+	@GeneratedValue
 	private UUID id;
 	@Column(name="email")
 	private String email;
